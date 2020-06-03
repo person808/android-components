@@ -84,7 +84,7 @@ samples=${component//samples-}
 if [[ "${component}" != samples-* ]]
 then
     # Case 1: tests for any component (but NOT samples, NOT real UI tests)
-    APK_APP="./samples/browser/build/outputs/apk/geckoNightly/debug/samples-browser-geckoNightly-debug.apk"
+    APK_APP=""
     if [[ "${component}" == *"-"* ]]
     then
       regex='([a-z]*)-(.*)'
