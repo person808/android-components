@@ -84,7 +84,6 @@ samples=${component//samples-}
 if [[ "${component}" != samples-* ]]
 then
     # Case 1: tests for any component (but NOT samples, NOT real UI tests)
-    APK_APP=""
     if [[ "${component}" == *"-"* ]]
     then
       regex='([a-z]*)-(.*)'
@@ -130,9 +129,15 @@ function failure_check() {
 
 echo
 echo "EXECUTE TEST(S)"
-echo
-$JAVA_BIN -jar $FLANK_BIN android run --config=$flank_template --max-test-shards=$num_shards --app=$APK_APP --test=$APK_TEST --project=$GOOGLE_PROJECT
-exitcode=$?
+
+    if [[ "${component}" == *"-"* ]]
+    then
+        echo
+        $JAVA_BIN -jar $FLANK_BIN android run --config=$flank_template --max-test-shards=$num_shards --test=$APK_TEST --project=$GOOGLE_PROJECT exitcode=$?
+      else
+        echo
+        $JAVA_BIN -jar $FLANK_BIN android run --config=$flank_template --max-test-shards=$num_shards --app=$APK_APP --test=$APK_TEST --project=$GOOGLE_PROJECT exitcode=$?
+    fi
 
 failure_check
 exit $exitcode
